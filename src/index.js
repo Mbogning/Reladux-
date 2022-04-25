@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './App';
 import FormProvider from './hooks/useFormValidation';
 import './index.css';
@@ -11,8 +12,10 @@ store.dispatch(addContact({ id: 1, name: 'Mbogning', email: 'mbogning.com', phon
 console.log(store.getState())
 
 ReactDOM.render(
-  <FormProvider>
-    <App />
-  </FormProvider>,
+  <Provider store={store} >
+    <FormProvider>
+      <App />
+    </FormProvider>
+  </Provider>,
   document.getElementById('root')
 );
