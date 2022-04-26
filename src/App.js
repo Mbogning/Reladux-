@@ -1,14 +1,15 @@
 import React, { useEffect, createRef, useState, useMemo } from 'react'
 import Row from './components/Row'
+import  { connect } from 'react-redux'
 import Components from './components'
 import AddContactModal from './components/AddContactModal'
-import contacts from './data'
+// import contacts from './data'
 import './utils'
 
-const App = () => {
+const App = ({ contacts }) => {
   const ref = createRef()
   const filters = ['🧳 business', '👫 friends', '👪 family']
-  const [list, setList] = useState(contacts)
+  // const [list, setList] = useState(contacts)
   const [selectedFilter, setFilter] = useState(null)
   const selectFilter = (filter) => {
     if(filter.unshiftForm(3) === selectedFilter) {
@@ -18,16 +19,9 @@ const App = () => {
     const substring = filter.unshiftForm(3)
     setFilter(substring)
   }
-  /** fonction pour enregister un contact en prenant en parametre contact. puis il merge la liste des contact */
-  const add = (contact) => {
-    const newContact = {...contact, id: list.length +1, name: `${contact.first} ${contact.last}`}
-    setList([contact, ...list])
-  }
+  
   const contactsList = useMemo(() => {
-    if(!selectedFilter) {
-      return list
-    }
-    return list.filterList(selectedFilter)
+    return !selectedFilter ? contacts : contacts.filterList(selectedFilter)
   }, [selectedFilter, contacts])
 
    useEffect(() => {
@@ -39,7 +33,7 @@ const App = () => {
   return (
     <div className='container'>
       {/** modal */}
-      <AddContactModal add={add} />
+      <AddContactModal />
 
       <div className='content d-flex justify-content-center align-items-center'>
         <div className='contacts-list list-group'>
@@ -84,4 +78,10 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = state => {
+  return {
+      contacts: state.contacts
+  }
+}
+
+export default connect(mapStateToProps)(App)

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import { connect } from "react-redux";
+import { addContact } from "../../lib/actions";
 import ReactPhoneInput from 'react-phone-input-2'
 import Modal from './Modal'
 import Components from "../../components";
@@ -15,11 +16,11 @@ const initialState = {
     category: "business",
 };
 
-function AddContactModal({ add }) {
+function AddContactModal({ addNewContact }) {
     const { validate } = useFormValidation();
     const filters = ['business', 'friends', 'family'];
     const [contact, setContact] = useState({ ...initialState });
-    const save = () => { add(contact)};
+    const save = () => { addNewContact(contact) };
     const handleOnChange = (e) => {
         setContact((prevState) => ({
             ...prevState,
@@ -73,4 +74,10 @@ function AddContactModal({ add }) {
     )
 }
 
-export default AddContactModal
+const mapDispatchToProps = dispatch => {
+    return {
+        addNewContact: (contact) => dispatch(addContact(contact))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AddContactModal)

@@ -1,5 +1,6 @@
 import React, { useState} from "react";
-
+import { connect } from "react-redux";
+import { editContact } from "../lib/actions";
 import Components from ".";
 
 function Row(props) {
@@ -15,9 +16,11 @@ function Row(props) {
     };
 
     const editCtc = () => setEditing(true);
-    const save = () => setEditing(false);
+    const save = () => {
+        edit(contact)
+        setEditing(false);
+    }
     
-
     const removeCtc = () => {
         const input = window.confirm('Voulez-vous supprimer ce contact ?')
     };
@@ -93,6 +96,10 @@ function Row(props) {
         </div>
     );
 };
-
-export default Row
+const mapDispatchToProps = dispatch => {
+    return {
+        edit: (contact) => dispatch(editContact(contact))
+    }
+}
+export default connect(null, mapDispatchToProps)(Row)
 
