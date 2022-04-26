@@ -1,4 +1,4 @@
-import { ADD_CONTACT, EDIT_CONTACT } from '../actions'
+import { ADD_CONTACT, EDIT_CONTACT, REMOVE_CONTACT } from '../actions'
 import contacts from '../../data'
 
 const initialState =  {
@@ -19,6 +19,10 @@ function reducer(state = initialState, {type, payload}) {
         case EDIT_CONTACT:
             const edit = (contact) => contact.id === payload.contact.id ? payload.contact.id : contact
             return { contacts : state.contacts.map(edit) }
+        
+        case REMOVE_CONTACT: 
+            const remove = (contact) => contact.id !== payload.id
+            return { contacts: state.contacts.filter(remove) }
         default: return state
     }   
 
